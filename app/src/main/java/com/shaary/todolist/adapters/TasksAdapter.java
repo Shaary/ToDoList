@@ -2,6 +2,7 @@ package com.shaary.todolist.adapters;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,16 @@ import java.util.List;
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHolder> {
 
 
+    private static final String TAG = TasksAdapter.class.getSimpleName();
     private TaskAdapterPresenter presenter;
+    private Listener listener;
 
-    public TasksAdapter() {
+    public interface Listener {
+        void onTaskSelected(Task task);
+    }
+
+    public TasksAdapter(Listener listener) {
+        this.listener = listener;
         presenter = new TaskAdapterPresenter();
     }
 
@@ -47,22 +55,30 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         presenter.setTasks(tasks);
     }
 
-    class TaskViewHolder extends RecyclerView.ViewHolder implements TaskViewHolderView {
+    class TaskViewHolder extends RecyclerView.ViewHolder implements TaskViewHolderView, View.OnClickListener {
 
-        TextView taskName;
-        TextView dueDate;
-
+        private TextView taskName;
+        private TextView dueDate;
+        private Task task;
 
         public TaskViewHolder(View itemView) {
             super(itemView);
+            itemView.setOnClickListener(this);
             taskName = itemView.findViewById(R.id.task_title_text);
             dueDate = itemView.findViewById(R.id.due_date_text);
         }
 
         @Override
         public void bind(Task task) {
+            this.task = task;
             taskName.setText(task.getName());
             dueDate.setText(task.getDueDate().toString());
+        }
+
+        @Override
+        public void onClick(View v) {
+            listener.onTaskSelected(task);
+            Log.d(TAG, "onClick: is called");
         }
     }
 }

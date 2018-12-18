@@ -8,4 +8,5 @@ public interface TaskViewHolderView {
 
     void bind(Task task);
 
+
 }

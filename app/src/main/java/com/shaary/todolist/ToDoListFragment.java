@@ -28,7 +28,7 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ToDoListFragment extends Fragment implements ToDoListFragmentView {
+public class ToDoListFragment extends Fragment implements ToDoListFragmentView, TasksAdapter.Listener {
 
     private static final String TAG = ToDoListFragment.class.getSimpleName();
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
@@ -49,7 +49,7 @@ public class ToDoListFragment extends Fragment implements ToDoListFragmentView {
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
 
-        adapter = new TasksAdapter();
+        adapter = new TasksAdapter(this);
         recyclerView.setAdapter(adapter);
 
         presenter = new ToDoListFragmentPresenter(this);
@@ -96,5 +96,16 @@ public class ToDoListFragment extends Fragment implements ToDoListFragmentView {
 
         adapter.setTasks(list);
         adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onTaskSelected(Task task) {
+        TaskFragment taskFragment = new TaskFragment().newInstance(task.getId());
+
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container_layout, taskFragment, "taskFrag")
+                .addToBackStack(null)
+                .commit();
+
     }
 }
