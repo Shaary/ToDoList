@@ -1,29 +1,48 @@
 package com.shaary.todolist.model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
+
 import java.util.Date;
 import java.util.UUID;
 
+@Entity
 public class Task {
+    @PrimaryKey (autoGenerate = true) @ColumnInfo(name = "id") private int id;
+
+    @ColumnInfo(name = "name")
     private String name;
+
+    @ColumnInfo(name = "description")
     private String description;
+
+    @ColumnInfo(name = "dueDate")
     private Date dueDate;
+
+    @ColumnInfo(name = "category")
     private String category;
-    private UUID id;
+
+    @ColumnInfo(name = "done")
     private boolean done;
 
     public Task() {
-        this.id = UUID.randomUUID();
         dueDate = new Date();
     }
 
     //To restore from database
-    public Task(UUID id) {
+    public Task(int id) {
         this.id = id;
         dueDate = new Date();
     }
 
-    public UUID getId() {
+    public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

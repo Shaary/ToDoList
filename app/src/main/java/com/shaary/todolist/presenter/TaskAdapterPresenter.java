@@ -8,7 +8,11 @@ import java.util.List;
 
 public class TaskAdapterPresenter {
 
-    List<Task> list = TasksList.getInstance().getTasks();
+    private List<Task> list;
+
+    public TaskAdapterPresenter(List<Task> list) {
+        this.list = list;
+    }
 
     public void bindView(TaskViewHolderView view, int position) {
         view.bind(list.get(position));

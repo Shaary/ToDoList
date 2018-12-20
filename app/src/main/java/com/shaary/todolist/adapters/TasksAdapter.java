@@ -26,9 +26,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskViewHold
         void onTaskSelected(Task task);
     }
 
-    public TasksAdapter(Listener listener) {
+    public TasksAdapter(Listener listener, List<Task> tasks) {
         this.listener = listener;
-        presenter = new TaskAdapterPresenter();
+        presenter = new TaskAdapterPresenter(tasks);
     }
 
     @NonNull

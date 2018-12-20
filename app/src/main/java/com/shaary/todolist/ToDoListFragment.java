@@ -38,6 +38,8 @@ public class ToDoListFragment extends Fragment implements ToDoListFragmentView, 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        TasksList tasksList = TasksList.getInstance(getContext());
+        List<Task> list = tasksList.getTasks();
 
         Log.d(TAG, "onCreateView: is called");
 
@@ -49,7 +51,7 @@ public class ToDoListFragment extends Fragment implements ToDoListFragmentView, 
         lm.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lm);
 
-        adapter = new TasksAdapter(this);
+        adapter = new TasksAdapter(this, list);
         recyclerView.setAdapter(adapter);
 
         presenter = new ToDoListFragmentPresenter(this);
@@ -68,10 +70,9 @@ public class ToDoListFragment extends Fragment implements ToDoListFragmentView, 
 
         switch (item.getItemId()) {
             case R.id.add_task:
-                //Creates a new task and opens the Task Fragment with the task's id to save changes to the task
-                Task task = new Task();
-                TasksList.getInstance().addTask(task);
-                TaskFragment taskFragment = new TaskFragment().newInstance(task.getId());
+
+
+                TaskFragment taskFragment = new TaskFragment();
 
                 getFragmentManager().beginTransaction()
                         .replace(R.id.container_layout, taskFragment, "taskFrag")
@@ -91,7 +92,7 @@ public class ToDoListFragment extends Fragment implements ToDoListFragmentView, 
 
     @Override
     public void updateUi() {
-        TasksList tasksList = TasksList.getInstance();
+        TasksList tasksList = TasksList.getInstance(getContext());
         List<Task> list = tasksList.getTasks();
 
         adapter.setTasks(list);
