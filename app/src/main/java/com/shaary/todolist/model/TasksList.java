@@ -6,7 +6,6 @@ import android.content.Context;
 import com.shaary.todolist.Database.TaskDatabase;
 
 import java.util.List;
-import java.util.UUID;
 
 //Singleton
 public class TasksList {
